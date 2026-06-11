@@ -104,8 +104,8 @@
     }
   },
   "scripts": {
-    "compile": "node ./node_modules/typescript/bin/tsc -p ./",
-    "lint": "node ./node_modules/typescript/bin/tsc -p ./ --noEmit",
+    "compile": "tsc -p ./",
+    "lint": "tsc -p ./ --noEmit",
     "test:unit": "npm run compile && node scripts/test-unit.mjs",
     "prepackage": "npm run compile",
     "package": "vsce package"
