@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  penetration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: linkaiheng2233-cyber/oclive-vscode-host
+          path: oclive-vscode-host
+          ref: main
+        continue-on-error: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build @oclive/vscode-host
+        run: |
+          if [ -d oclive-vscode-host ]; then
+            cd oclive-vscode-host && npm ci && npm run build
+          else
+            echo "oclive-vscode-host not available — using file: dep from package.json"
+          fi
+      - run: npm ci
+      - run: npm run test:unit

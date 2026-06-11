@@ -1,0 +1,122 @@
+{
+  "name": "oclive-vscode-penetration",
+  "displayName": "OCLive Penetration",
+  "description": "Official OCLive workspace penetration plugin (diary, letters, idle)",
+  "version": "0.1.0",
+  "publisher": "oclive",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "extensionDependencies": ["oclive.oclive-vscode"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "oclive-penetration.appendDiary",
+        "title": "OCLive Penetration: Append to Diary"
+      },
+      {
+        "command": "oclive-penetration.writeLetter",
+        "title": "OCLive Penetration: Write Letter"
+      },
+      {
+        "command": "oclive-penetration.revealOcliveFolder",
+        "title": "OCLive Penetration: Reveal .oclive Folder"
+      },
+      {
+        "command": "oclive-penetration.syncDiaryMemory",
+        "title": "OCLive Penetration: Sync Diary Summary to Memory"
+      },
+      {
+        "command": "oclive-penetration.openSettings",
+        "title": "OCLive Penetration: Open Settings"
+      }
+    ],
+    "configuration": {
+      "title": "OCLive Penetration",
+      "properties": {
+        "oclive-penetration.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable workspace penetration (diary under .oclive/)."
+        },
+        "oclive-penetration.diaryPath": {
+          "type": "string",
+          "default": ".oclive/{roleId}/diary.md",
+          "description": "Diary path template relative to workspace root."
+        },
+        "oclive-penetration.autoDiaryEveryNTurns": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Auto-append diary every N chat turns; 0 disables."
+        },
+        "oclive-penetration.allowedGlobs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [".oclive/**"],
+          "description": "Whitelist globs for penetration write paths."
+        },
+        "oclive-penetration.previewAfterWrite": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open diary file in editor after append."
+        },
+        "oclive-penetration.terminal.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a read-only one-liner in terminal after diary append."
+        },
+        "oclive-penetration.idle.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Remind to open chat after idle seconds when window loses focus."
+        },
+        "oclive-penetration.idle.seconds": {
+          "type": "number",
+          "default": 300,
+          "minimum": 60,
+          "description": "Idle seconds before focus reminder."
+        },
+        "oclive-penetration.idle.dailyLimit": {
+          "type": "number",
+          "default": 3,
+          "minimum": 0,
+          "description": "Max idle reminders per day; 0 = unlimited."
+        },
+        "oclive-penetration.memorySync.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow manual sync of diary summary into long_term_memory (C2)."
+        },
+        "oclive-penetration.memorySync.importance": {
+          "type": "number",
+          "default": 0.6,
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Importance for update_memory when syncing diary."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "node ./node_modules/typescript/bin/tsc -p ./",
+    "lint": "node ./node_modules/typescript/bin/tsc -p ./ --noEmit",
+    "test:unit": "npm run compile && node scripts/test-unit.mjs",
+    "prepackage": "npm run compile",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "@oclive/vscode-host": "file:../oclive-vscode-host"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.1",
+    "typescript": "^5.4.0"
+  }
+}
